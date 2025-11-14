@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sinh học 11 - Ôn tập nhanh</title>
+
+  <style>
+    :root{--bg:#f5f7fb;--card:#fff;--accent:#2563eb;--muted:#6b7280;--red-btn:#ef4444}
+    *{box-sizing:border-box;font-family:Inter,system-ui,Roboto,Arial,sans-serif}
+    body{margin:0;background:var(--bg);color:#111}
+    header{background:linear-gradient(90deg,#0ea5e9,#2563eb);color:#fff;padding:14px 20px;
+           display:flex;align-items:center;justify-content:space-between}
+    header h1{margin:0;font-size:18px}
+    nav a{color:#dbeafe;margin-left:12px;text-decoration:none;font-size:14px}
+    .container{max-width:980px;margin:24px auto;padding:0 16px}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:16px}
+    .card{background:var(--card);padding:16px;border-radius:8px;
+          box-shadow:0 6px 18px rgba(16,24,40,0.06)}
+    .small{font-size:14px;color:var(--muted)}
+    .btn{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+    .mutebtn{background:#eee;color:#333;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+    input{width:100%;padding:8px;margin-bottom:6px;border-radius:6px;border:1px solid #e6eef8}
+    /* Cải thiện Lesson Item để hiển thị tốt hơn */
+    .lesson-item{border-left:4px solid #e6eef8;padding:8px;margin-bottom:12px;transition:all 0.1s; cursor:default;} 
+    .lesson-item:hover{background:#f0f4f9;border-left:4px solid var(--accent);}
+    .question{margin-bottom:8px}
+    /* Thêm style cho tiêu đề chương */
+    .chapter-title{font-size:1.4em; color:#0e7490; margin-top:20px; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #ccc;}
+    
+    /* --- STYLING CHO POP-UP MODAL MỚI --- */
+    #modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6); /* Nền tối mờ */
+        display: none; /* Mặc định ẩn */
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Luôn nổi trên mọi thứ */
+    }
+    #modal-content {
+        background-color: var(--card);
+        padding: 24px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+    }
+    #modal-title {
+        margin-top: 0;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+    #modal-close-btn {
+        margin-top: 15px;
+        width: 100%;
+        padding: 10px;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>Sinh học 11 — Ôn tập nhanh</h1>
+  <nav>
+    <a href="#lessons">Tóm tắt</a>
+    <a href="#quiz">Ôn tập</a>
+    <a href="#history">Lịch sử</a>
+    <a href="#login" id="nav-user">Đăng nhập</a> 
+  </nav>
+</header>
+
+<main class="container">
+  <div class="grid">
+    <section class="card" id="main-card"></section>
+
+    <aside class="card">
+      <h3 id="welcome" style="margin-top:0">Bạn chưa đăng nhập</h3>
+
+      <div id="auth-controls">
+        <input id="username" placeholder="Tên học sinh">
+        <input id="password" placeholder="Mật khẩu" type="password">
+
+        <div style="display:flex; gap:8px; margin-top:8px">
+          <button class="btn" id="btn-login">Đăng nhập</button>
+          <button class="mutebtn" id="btn-register">Đăng ký</button>
+        </div>
+      </div>
+      
+      <button id="btn-logout" class="mutebtn" style="width:100%; margin-top:8px; display:none;">Đăng xuất</button>
+
+      <hr style="margin:14px 0">
+      <p class="small">Chọn mục ở bên trái để xem tóm tắt và làm bài.</p>
+    </aside>
+  </div>
+
+  <footer style="text-align:center;margin-top:20px;color:#777;font-size:13px">
+    Ứng dụng lưu dữ liệu trên trình duyệt (localStorage).
+  </footer>
+</main>
+
+<div id="modal-overlay">
+    <div id="modal-content">
+        <h3 id="modal-title"></h3>
+        <div id="modal-body"></div>
+        <button id="modal-close-btn" onclick="hideModal()">Đóng</button>
+    </div>
+</div>
+<script>
+// ---------------------- LOAD FILE JSON (Gộp 50 câu hỏi & thêm lesson ID) ----------------------
+const QUIZ = [
+  { "id": 1, "q": "Quá trình vận chuyển nước từ rễ lên lá chủ yếu theo con đường nào?", "options": ["Mạch rây", "Mạch gỗ", "Qua gian bào"], "answer": 1, "lesson": "sh11_c1_b1" },
+  { "id": 2, "q": "Lực hút do thoát hơi nước ở lá được gọi là:", "options": ["Áp suất rễ", "Lực hút lá", "Lực liên kết – bám dính của cột nước"], "answer": 1, "lesson": "sh11_c1_b1" },
+  { "id": 3, "q": "Rễ cây hấp thụ nước chủ yếu qua:", "options": ["Miền sinh trưởng", "Lông hút", "Vòng tạo gỗ"], "answer": 1, "lesson": "sh11_c1_b1" },
+  { "id": 4, "q": "Cơ quan quang hợp chủ yếu của thực vật là:", "options": ["Lá", "Thân", "Rễ"], "answer": 0, "lesson": "sh11_c1_b2" },
+  { "id": 5, "q": "Sản phẩm cuối cùng của quang hợp ở cây C3 là:", "options": ["Tinh bột", "Saccarose", "Glucose"], "answer": 2, "lesson": "sh11_c1_b2" },
+  { "id": 6, "q": "Enzyme Rubisco có chức năng:", "options": ["Khử CO2", "Cố định CO2", "Vận chuyển e-"], "answer": 1, "lesson": "sh11_c1_b2" },
+  { "id": 7, "q": "Con đường khí khổng đóng mở dựa vào:", "options": ["Áp suất thẩm thấu", "Quang chu kì", "pH của đất"], "answer": 0, "lesson": "sh11_c1_b2" },
+  { "id": 8, "q": "Dòng mạch rây vận chuyển chủ yếu:", "options": ["Nước và ion khoáng", "Chất hữu cơ", "Oxi"], "answer": 1, "lesson": "sh11_c1_b1" },
+  { "id": 9, "q": "Hormone kích thích sinh trưởng ở thực vật là:", "options": ["Auxin", "Axit abxixic", "Etylen"], "answer": 0, "lesson": "sh11_c3_b1" },
+  { "id": 10, "q": "Quang chu kỳ ảnh hưởng chủ yếu đến:", "options": ["Quang hợp", "Sự nở hoa", "Hô hấp"], "answer": 1, "lesson": "sh11_c3_b2" },
+  { "id": 11, "q": "Pha sáng của quang hợp tạo ra:", "options": ["CO2", "ATP và NADPH", "Tinh bột"], "answer": 1, "lesson": "sh11_c1_b2" },
+  { "id": 12, "q": "Hô hấp hiếu khí xảy ra ở bào quan:", "options": ["Lục lạp", "Ti thể", "Màng sinh chất"], "answer": 1, "lesson": "sh11_c1_b3" },
+  { "id": 13, "q": "Sản phẩm cuối cùng của hô hấp hiếu khí là:", "options": ["H2O + CO2 + năng lượng", "C2H5OH + CO2", "Lactate"], "answer": 0, "lesson": "sh11_c1_b3" },
+  { "id": 14, "q": "Đối với động vật, hệ cơ quan thực hiện trao đổi khí là:", "options": ["Hệ tuần hoàn", "Hệ hô hấp", "Hệ bài tiết"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 15, "q": "Dạng vận chuyển O2 chủ yếu trong máu người:", "options": ["Oxi hòa tan", "Oxihemoglobin", "Oxi-enzym"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 16, "q": "CO2 được vận chuyển trong máu chủ yếu dưới dạng:", "options": ["Hòa tan", "CO2 liên kết hemoglobin", "Ion HCO3−"], "answer": 2, "lesson": "sh11_c_dv" },
+  { "id": 17, "q": "Điện thế nghỉ của tế bào thần kinh khoảng:", "options": ["-70 mV", "+70 mV", "0 mV"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 18, "q": "Synapse là:", "options": ["Khe giữa hai tế bào thần kinh", "Thụ thể", "Sợi trục"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 19, "q": "Xung thần kinh lan truyền trên sợi trục nhờ:", "options": ["Trao đổi ion qua màng", "Đột biến gen", "Hình thành ADN"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 20, "q": "Hormon insulin có vai trò:", "options": ["Tăng đường huyết", "Giảm đường huyết", "Tăng nhịp tim"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 21, "q": "Tiêu hóa ở dạ dày chủ yếu nhờ enzyme:", "options": ["Pepsin", "Tripsin", "Amylase"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 22, "q": "Lọc máu ở thận diễn ra tại:", "options": ["Ống góp", "Cầu thận", "Ống lượn xa"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 23, "q": "Nước tiểu đầu chứa nhiều nhất:", "options": ["Protein", "Tế bào máu", "Nước và ion khoáng"], "answer": 2, "lesson": "sh11_c_dv" },
+  { "id": 24, "q": "Tim co bóp nhờ hệ dẫn truyền:", "options": ["Nơron cảm giác", "Nút xoang – nút nhĩ thất", "Tủy sống"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 25, "q": "Chu kì tim gồm:", "options": ["Pha nhĩ co – thất co – dãn chung", "Nhĩ co – giãn – thất giãn", "Co đồng thời"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 26, "q": "Hệ mạch có máu áp suất cao nhất:", "options": ["Tĩnh mạch", "Mao mạch", "Động mạch"], "answer": 2, "lesson": "sh11_c_dv" },
+  { "id": 27, "q": "Miễn dịch không đặc hiệu gồm:", "options": ["Kháng thể", "Lympho B", "Hàng rào vật lí – đại thực bào"], "answer": 2, "lesson": "sh11_c_dv" },
+  { "id": 28, "q": "Miễn dịch thu được là:", "options": ["Sinh ra sau khi phơi nhiễm", "Có từ khi sinh ra", "Di truyền"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 29, "q": "Phản xạ có cung gồm bao nhiêu bộ phận?", "options": ["3", "4", "5"], "answer": 2, "lesson": "sh11_c_dv" },
+  { "id": 30, "q": "Hormon sinh trưởng GH tác động lên:", "options": ["Xương và cơ", "Tim", "Gan"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 31, "q": "Thụ tinh ở thực vật có hoa là sự kết hợp giữa:", "options": ["Hạt phấn + lá", "Tinh tử + noãn", "Hạt phấn + vỏ quả"], "answer": 1, "lesson": "sh11_c3_b2" },
+  { "id": 32, "q": "Cơ chế hướng sáng của thực vật liên quan đến:", "options": ["Auxin phân bố không đều", "ABA tăng lên", "Gibberellin tăng mạnh"], "answer": 0, "lesson": "sh11_c2_b1" },
+  { "id": 33, "q": "Hô hấp kị khí tạo ra:", "options": ["CO2 + nước", "Rượu etylic hoặc lactate", "Glucose"], "answer": 1, "lesson": "sh11_c1_b3" },
+  { "id": 34, "q": "Động vật hằng nhiệt có đặc điểm:", "options": ["Thân nhiệt thay đổi theo môi trường", "Thân nhiệt ổn định", "Không điều hòa thân nhiệt"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 35, "q": "Côn trùng trao đổi khí qua:", "options": ["Phổi", "Mang", "Hệ ống khí"], "answer": 2, "lesson": "sh11_c_dv" },
+  { "id": 36, "q": "Cảm ứng ở thực vật đặc trưng bởi:", "options": ["Phản ứng nhanh", "Phản ứng chậm và không định vị", "Di chuyển có hướng"], "answer": 1, "lesson": "sh11_c2_b1" },
+  { "id": 37, "q": "Thụ thể ánh sáng của thực vật là:", "options": ["Phytochrom", "Opsin", "Rhodopsin"], "answer": 0, "lesson": "sh11_c3_b2" },
+  { "id": 38, "q": "Bộ phận kiểm soát nhịp hô hấp ở người:", "options": ["Tiểu não", "Hành não", "Vỏ não"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 39, "q": "Tiêu hóa ở ruột non chủ yếu nhờ:", "options": ["Enzyme dịch vị", "Men tụy và dịch mật", "Nước bọt"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 40, "q": "Máu người có mấy loại tế bào chính?", "options": ["2", "3", "4"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 41, "q": "Tuyến giáp tiết ra:", "options": ["Adrenalin", "Thyroxin", "Insulin"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 42, "q": "Hormon ABA có tác dụng:", "options": ["Kích thích nảy mầm", "Kích thích ra hoa", "Gây ngủ, đóng khí khổng"], "answer": 2, "lesson": "sh11_c3_b1" },
+  { "id": 43, "q": "Thực vật CAM đặc trưng bởi:", "options": ["Đóng khí khổng ban ngày", "Đóng khí khổng ban đêm", "Không có khí khổng"], "answer": 1, "lesson": "sh11_c1_b2" },
+  { "id": 44, "q": "Mỡ được tiêu hóa nhờ enzyme:", "options": ["Lipase", "Protease", "Amylase"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 45, "q": "Xương dài phát triển chiều dài nhờ:", "options": ["Màng xương", "Sụn tăng trưởng", "Tủy xương"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 46, "q": "Sự phát triển ở động vật không xương sống thường qua:", "options": ["Biến thái", "Đẻ trứng", "Nở hoa"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 47, "q": "Tinh trùng được sản xuất ở:", "options": ["Thận", "Ống sinh tinh", "Ống dẫn tinh"], "answer": 1, "lesson": "sh11_c_dv" },
+  { "id": 48, "q": "Noãn người sau khi rụng tồn tại khoảng:", "options": ["12–24 giờ", "48 giờ", "1 tuần"], "answer": 0, "lesson": "sh11_c_dv" },
+  { "id": 49, "q": "Ống Malpighi là cơ quan bài tiết của:", "options": ["Cá", "Chim", "Côn trùng"], "answer": 2, "lesson": "sh11_c_dv" },
+  { "id": 50, "q": "Hệ sinh dục nữ phóng noãn nhờ hormone:", "options": ["FSH", "LH", "TSH"], "answer": 1, "lesson": "sh11_c_dv" }
+];
+
+
+// ---------------------- LESSONS (Hoàn thiện tóm tắt & thêm cấu trúc Chương) ----------------------
+const LESSONS = [
+  { id: "sh11_c1_intro", chapter: "CHƯƠNG I: TRAO ĐỔI CHẤT VÀ NĂNG LƯỢNG Ở THỰC VẬT", title: "Tổng quan", isChapter: true },
+  {
+    id:"sh11_c1_b1", chapter: "Chương I", title:"Bài 1: Hấp thụ & vận chuyển nước",
+    summary:`Rễ là cơ quan hấp thụ nước và ion khoáng chủ yếu. Nước vào **lông hút** bằng cơ chế **thẩm thấu**, do chênh lệch thế nước giữa đất và tế bào. Ion khoáng đi vào bằng **vận chuyển thụ động** (theo građien nồng độ/điện thế) hoặc **chủ động** (cần ATP). Nước di chuyển từ lông hút vào mạch gỗ rễ theo hai con đường chính: **gian bào** (qua thành tế bào) và **tế bào chất** (xuyên màng). Khi đến **nội bì**, nước buộc phải đi qua đai Caspari để vào mạch gỗ, giúp kiểm soát dòng nước và chất tan. Nước vận chuyển trong thân (dòng mạch gỗ) nhờ ba lực: 1) **Lực hút do thoát hơi nước** ở lá (quan trọng nhất, tạo áp suất âm); 2) **Lực liên kết – bám dính** của nước (giữ cột nước không đứt); 3) **Lực đẩy rễ** (do áp suất thẩm thấu). Thoát hơi nước đóng vai trò then chốt trong việc tạo dòng mạch gỗ và giúp điều hòa nhiệt độ cho cây. Quá trình vận chuyển chất hữu cơ (sản phẩm quang hợp) diễn ra trong **mạch rây** (dòng mạch rây) từ lá xuống các cơ quan dự trữ hoặc sinh trưởng.`
+  },
+  {
+    id:"sh11_c1_b2", chapter: "Chương I", title:"Bài 2: Quang hợp",
+    summary:`Quang hợp là quá trình sử dụng năng lượng ánh sáng để tổng hợp chất hữu cơ (đường Glucose) từ CO₂ và H₂O, diễn ra chủ yếu ở **lục lạp** trong tế bào lá. Quá trình gồm hai pha:
+    * **Pha sáng** (tại màng tilacôit): Biến đổi năng lượng ánh sáng thành năng lượng hóa học, tạo ra **ATP**, **NADPH** và giải phóng **O₂** từ quá trình quang phân ly nước. Các sắc tố (Diệp lục a, b, Carôtenôit) hấp thụ ánh sáng.
+    * **Pha tối** (tại chất nền lục lạp): Sử dụng ATP và NADPH từ pha sáng để **cố định CO₂** tạo đường thông qua **chu trình Calvin** (C₃). Enzyme **Rubisco** là enzyme quan trọng nhất cố định CO₂.
+    Thực vật được phân loại thành C₃, C₄ và CAM. **C₄** và **CAM** có cơ chế cố định CO₂ sơ bộ (tạo axit 4-carbon) để thích nghi với môi trường khô nóng, giảm **hô hấp sáng** và tối ưu khả năng hấp thụ CO₂. Cường độ quang hợp bị chi phối bởi **ánh sáng** (cường độ, thành phần), **CO₂**, **nước**, **nhiệt độ** và hàm lượng **diệp lục**. Quang hợp cung cấp O₂ và chất hữu cơ cho sự sống, quyết định năng suất nông nghiệp.`
+  },
+  {
+    id:"sh11_c1_b3", chapter: "Chương I", title:"Bài 3: Hô hấp ở thực vật",
+    summary:`Hô hấp là quá trình **oxy hóa** các chất hữu cơ (như Glucose) thành CO₂ và H₂O, giải phóng năng lượng (chủ yếu là **ATP**) để cung cấp cho mọi hoạt động sống của cây. Hô hấp gồm ba giai đoạn chính: 1) **Đường phân** (tế bào chất, tạo 2 ATP và 2 Pyruvate); 2) **Chu trình Crebs** (ti thể, tạo ra CO₂ và H⁺); 3) **Chuỗi chuyền electron** (màng trong ti thể, tạo ra phần lớn ATP nhờ O₂ là chất nhận electron cuối cùng). **Hô hấp hiếu khí** (có O₂) tạo ra khoảng 30-32 ATP. **Hô hấp kị khí** (không O₂) xảy ra trong điều kiện thiếu oxy, tạo ra rượu etylic hoặc axit lactic và chỉ 2 ATP, gây độc cho cây. Năng lượng hô hấp được dùng cho: sinh trưởng, hấp thụ ion khoáng chủ động, tổng hợp các chất mới (protein, lipid, axit nucleic) và duy trì sức trương. Cường độ hô hấp bị ảnh hưởng mạnh bởi **nhiệt độ** (tăng theo nhiệt độ đến giới hạn tối ưu), **nước**, **oxy** và trạng thái sinh lý của cây.`
+  },
+
+  { id: "sh11_c2_intro", chapter: "CHƯƠNG II: CẢM ỨNG Ở THỰC VẬT", title: "Tổng quan", isChapter: true },
+  {
+    id:"sh11_c2_b1", chapter: "Chương II", title:"Bài 4: Hướng động",
+    summary:`**Hướng động** (Tropism) là hình thức cảm ứng của thực vật bằng cách sinh trưởng theo hướng của kích thích từ môi trường. Phản ứng này là **sinh trưởng có hướng**. Các dạng chính gồm: **hướng sáng** (thân dương, rễ âm), **hướng trọng lực** (rễ dương, thân âm), **hướng nước** (rễ dương), **hướng hóa** (rễ về phía chất dinh dưỡng), và **hướng tiếp xúc** (thân leo quấn vào giá thể). Cơ chế chung là sự phân bố **không đều của Auxin**: Auxin phân bố nhiều hơn ở phía không bị kích thích (hoặc bị kích thích yếu hơn) làm phía đó sinh trưởng nhanh hơn, gây ra sự uốn cong. Ví dụ, trong hướng sáng, auxin dồn về phía tối, kích thích kéo dài tế bào phía tối nhanh hơn phía sáng, làm ngọn cây cong về phía sáng. Hướng động là cơ chế quan trọng giúp cây cố định và thích nghi, tối ưu hóa việc hấp thụ ánh sáng và chất dinh dưỡng.`
+  },
+  {
+    id:"sh11_c2_b2", chapter: "Chương II", title:"Bài 5: Ứng động",
+    summary:`**Ứng động** (Nastic movement) là phản ứng của thực vật đáp lại kích thích nhưng **không phụ thuộc vào hướng** của kích thích. Ứng động thường là phản ứng nhanh hơn hướng động. Có hai loại chính:
+    * **Ứng động sinh trưởng**: Liên quan đến tốc độ sinh trưởng không đều của các phần cơ quan (ví dụ: cánh hoa mở ra/khép lại, nở của hoa mười giờ theo ánh sáng). Cơ chế chủ yếu do sự thay đổi nồng độ Auxin, Gibberellin hoặc do **Quang chu kì** (Phytochrom) chi phối sự sinh trưởng của các mặt cánh hoa.
+    * **Ứng động không sinh trưởng**: Do sự thay đổi đột ngột về **sức trương nước** của các nhóm tế bào (ví dụ: lá trinh nữ cụp lại khi chạm vào – ứng động tiếp xúc, hoặc sự bắt mồi của cây nắp ấm). Khi kích thích xảy ra, sự di chuyển ion và nước nhanh chóng làm thay đổi sức trương ở các tế bào đệm (pulvinus), gây ra sự vận động.
+    Ứng động giúp cây phản ứng linh hoạt, thích nghi với sự thay đổi của môi trường (ánh sáng, nhiệt độ) và thực hiện chức năng tự bảo vệ.`
+  },
+
+  { id: "sh11_c3_intro", chapter: "CHƯƠNG III: SINH TRƯỞNG VÀ PHÁT TRIỂN Ở THỰC VẬT", title: "Tổng quan", isChapter: true },
+  {
+    id:"sh11_c3_b1", chapter: "Chương III", title:"Bài 6: Sinh trưởng & Hoocmôn thực vật",
+    summary:`**Sinh trưởng** là sự tăng không thể đảo ngược về kích thước và khối lượng của thực vật do tăng số lượng và kích thước tế bào.
+    * **Sinh trưởng sơ cấp** (tăng chiều dài) diễn ra ở đỉnh rễ, đỉnh thân do mô phân sinh đỉnh.
+    * **Sinh trưởng thứ cấp** (tăng chiều ngang) diễn ra ở thân, rễ cây thân gỗ do mô phân sinh bên (tầng sinh mạch).
+    Các **hoocmôn thực vật** (Phytohormone) điều hòa quá trình này: **Auxin** (kích thích kéo dài tế bào, hình thành rễ, gây hướng động); **Gibberellin** (kích thích kéo dài thân, nảy mầm, ra hoa sớm); **Xitokinin** (kích thích phân chia tế bào, làm chậm lão hóa); **Axit Abxixic (ABA)** (gây trạng thái ngủ, đóng khí khổng, ức chế nảy mầm); **Ethylen** (kích thích quả chín, rụng lá). Sự cân bằng giữa các hormone kích thích và ức chế quyết định tốc độ và hình thái sinh trưởng của cây. Sinh trưởng bị chi phối bởi các yếu tố ngoài như di truyền, ánh sáng, nước, nhiệt độ và dinh dưỡng khoáng.`
+  },
+  {
+    id:"sh11_c3_b2", chapter: "Chương III", title:"Bài 7: Phát triển ở thực vật",
+    summary:`**Phát triển** ở thực vật là toàn bộ quá trình sống, bao gồm sự sinh trưởng, sự phân hóa và hình thành các cơ quan mới (như ra hoa, tạo quả). Phát triển là một quá trình chu kỳ và không thể đảo ngược. Quá trình này được điều hòa bởi sự phối hợp giữa các hoocmôn và các yếu tố môi trường.
+    * **Quang chu kì** (tương quan giữa độ dài ngày và đêm) là yếu tố quyết định sự ra hoa. Thực vật được chia thành: **Ngày dài** (cần đêm ngắn), **Ngày ngắn** (cần đêm dài) và **Trung tính**. Sự cảm nhận quang chu kì diễn ra ở lá nhờ sắc tố **Phytochrom** (thay đổi giữa dạng Pđ và Px).
+    * **Xuân hóa** là sự cảm ứng ra hoa nhờ nhiệt độ thấp.
+    * **Hoocmôn thực vật** đóng vai trò điều hòa toàn bộ quá trình phát triển (ví dụ: Florigen được cho là chất kích thích ra hoa, di chuyển từ lá lên chồi).
+    * **Thụ tinh** ở thực vật là sự kết hợp giữa tinh tử và noãn. Sau thụ tinh, bầu nhụy phát triển thành quả, noãn phát triển thành hạt.
+    Hiểu biết về phát triển giúp con người điều khiển sự ra hoa, tăng năng suất cây trồng (ví dụ: dùng Gibberellin để tăng kích thước quả không hạt).`
+  }
+  // Thêm mục ôn tập Động vật (nếu cần lọc riêng)
+  , { id: "sh11_c_dv", chapter: "ÔN TẬP THÊM", title: "Trao đổi chất và Cảm ứng ở Động vật", summary: "Tóm tắt chung các nội dung động vật (Hô hấp, Tuần hoàn, Thần kinh, Tiết, Nội tiết) để kiểm tra thêm.", isChapter: false }
+];
+
+// ---------------------- POP-UP MODAL LOGIC MỚI ----------------------
+/**
+ * Hiển thị pop-up (modal) với nội dung tùy chỉnh.
+ * @param {string} title Tiêu đề của pop-up (ví dụ: "Thành công", "Lỗi")
+ * @param {string} message Nội dung thông báo
+ */
+function showModal(title, message) {
+  document.getElementById("modal-title").textContent = title;
+  document.getElementById("modal-body").innerHTML = `<p>${message}</p>`;
+  document.getElementById("modal-overlay").style.display = "flex"; // Hiển thị modal
+}
+
+/**
+ * Ẩn pop-up (modal).
+ */
+function hideModal() {
+  document.getElementById("modal-overlay").style.display = "none";
+}
+
+// Thêm sự kiện click để đóng modal khi click vào nền tối
+document.getElementById("modal-overlay").addEventListener('click', function(event) {
+    // Chỉ đóng modal nếu click trực tiếp vào lớp overlay (không phải nội dung modal)
+    if (event.target.id === 'modal-overlay') {
+        hideModal();
+    }
+});
+// -------------------------------------------------------------------
+
+
+// ---------------------- AUTH LOGIC ----------------------
+function currentUser(){ return localStorage.getItem("edu_user"); }
+
+// Cập nhật giao diện bên lề (Side Panel)
+function updateUserPanel(){
+  const u = currentUser();
+  const welcome = document.getElementById("welcome");
+  const controls = document.getElementById("auth-controls");
+  const logout = document.getElementById("btn-logout");
+
+  if(u){
+    welcome.textContent = "Xin chào, " + u;
+    controls.style.display = "none";
+    logout.style.display = "block"; // Hiển thị nút Đăng xuất
+    document.getElementById("nav-user").textContent = u;
+  } else {
+    welcome.textContent = "Bạn chưa đăng nhập";
+    controls.style.display = "flex"; // Hiển thị khối Đăng nhập/Đăng ký
+    logout.style.display = "none";
+    document.getElementById("nav-user").textContent = "Đăng nhập";
+  }
+}
+
+// Xử lý Đăng ký (Đã thay thế alert() bằng showModal())
+document.getElementById("btn-register").onclick = ()=>{
+  const username = document.getElementById("username");
+  const password = document.getElementById("password");
+  const user = username.value.trim();
+  const pass = password.value.trim();
+  if(!user || !pass) return showModal("Lỗi", "Vui lòng nhập đủ Tên và Mật khẩu!");
+
+  let accounts = JSON.parse(localStorage.getItem("edu_accounts") || "{}");
+  if(accounts[user]) return showModal("Lỗi", "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác!");
+
+  accounts[user] = pass;
+  localStorage.setItem("edu_accounts", JSON.stringify(accounts));
+  showModal("Thành công", "Đăng ký thành công! Giờ bạn có thể đăng nhập.");
+  username.value = ""; // Xóa dữ liệu cũ
+  password.value = "";
+};
+
+// Xử lý Đăng nhập (Đã thay thế alert() bằng showModal())
+document.getElementById("btn-login").onclick = ()=>{
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+
+  let acc = JSON.parse(localStorage.getItem("edu_accounts") || "{}");
+  if(!acc[user] || acc[user] !== pass) return showModal("Lỗi", "Sai tên đăng nhập hoặc mật khẩu. Hoặc bạn chưa đăng ký!");
+
+  localStorage.setItem("edu_user", user);
+  updateUserPanel();
+  showModal("Đăng nhập thành công", "Chào mừng bạn trở lại! Hãy bắt đầu ôn tập.");
+  navigateTo("home"); 
+};
+
+// Xử lý Đăng xuất
+document.getElementById("btn-logout").onclick = ()=>{
+  localStorage.removeItem("edu_user");
+  updateUserPanel();
+  showModal("Thông báo", "Bạn đã đăng xuất thành công.");
+  navigateTo("home"); 
+};
+
+// ---------------------- HISTORY ----------------------
+function saveAttempt(at){
+  let arr = JSON.parse(localStorage.getItem("quiz_history") || "[]");
+  arr.push(at);
+  localStorage.setItem("quiz_history", JSON.stringify(arr));
+}
+function loadHistory(){
+  return JSON.parse(localStorage.getItem("quiz_history") || "[]");
+}
+
+// ---------------------- RENDER PAGES ----------------------
+const mainCard = document.getElementById("main-card");
+
+function renderHome(){
+  mainCard.innerHTML = `
+    <h2>Trang chủ</h2>
+    <p class="small">Chọn chế độ ôn tập hoặc đọc tóm tắt bài học.</p>
+    <button class="btn" onclick="navigateTo('quiz')">Bắt đầu ôn tập</button>
+  `;
+}
+
+// Hàm renderLessons (Đã thêm nút Quay lại Trang chủ)
+function renderLessons() {
+  let html = `
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>Tóm tắt bài học Sinh học 11</h2>
+        <button class="mutebtn" onclick="navigateTo('home')">Quay lại Trang chủ</button>
+    </div>
+    <hr style="margin-top:0">
+  `;
+  let currentChapter = "";
+
+  LESSONS.forEach(l => {
+    if (l.isChapter) {
+      html += `<h3 class="chapter-title">📚 ${l.chapter}</h3>`;
+      currentChapter = l.chapter.split(":")[0]; // Chỉ lấy "CHƯƠNG X"
+    } else {
+      html += `
+        <div class="lesson-item">
+          <strong>${l.title}</strong>
+          <p class="small" style="margin-top:2px; margin-bottom:4px; color:#555;"><i>${currentChapter}</i></p>
+          <p class="small">${l.summary}</p>
+        </div>`;
+    }
+  });
+
+  mainCard.innerHTML = html;
+}
+
+// --------- QUIZ MODE (Tạo giao diện tách chế độ) ---------
+function renderQuiz(){
+  mainCard.innerHTML = `
+    <h2>Chọn chế độ ôn tập</h2>
+    <p class="small" style="margin-bottom:15px;">Bạn có thể ôn tập toàn bộ 50 câu hỏi đã tổng hợp hoặc làm bài kiểm tra tập trung theo từng bài học.</p>
+    <button class="btn" onclick="loadQuiz(QUIZ, 'Ôn toàn bộ 50 câu')">Ôn tập toàn bộ</button>
+    <button class="mutebtn" style="margin-left:8px" onclick="startQuiz('lesson')">Kiểm tra theo bài</button>
+  `;
+}
+
+// Hàm startQuiz (Thêm nút Quay lại Trang chủ khi chọn bài kiểm tra)
+function startQuiz(mode){
+  if(mode === "lesson"){
+    let html = `
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h2>Chọn bài kiểm tra</h2>
+          <button class="mutebtn" onclick="navigateTo('home')">Quay lại Trang chủ</button>
+      </div>
+      <hr style="margin-top:0">
+    `;
+    let currentChapter = "";
+
+    LESSONS.forEach(l=>{
+      if (l.isChapter) {
+        html += `<h3 class="chapter-title">📝 ${l.chapter}</h3>`;
+        currentChapter = l.chapter;
+      } else {
+        const quizCount = QUIZ.filter(q => q.lesson === l.id).length;
+        if (quizCount > 0) {
+            html += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
+                        <span style="font-weight:500; flex-grow:1;">${l.title}</span>
+                        <button class="mutebtn" onclick="loadLessonQuiz('${l.id}')">
+                          Làm bài (${quizCount} câu)
+                        </button>
+                      </div>`;
+        }
+      }
+    });
+
+    mainCard.innerHTML = html;
+    return;
+  }
+}
+
+function loadLessonQuiz(id){
+  const list = QUIZ.filter(q => q.lesson === id);
+  if(list.length===0){
+    mainCard.innerHTML = "<p>Chưa có câu hỏi cho bài này.</p>";
+    return;
+  }
+  const lessonInfo = LESSONS.find(l => l.id === id);
+  const title = lessonInfo ? lessonInfo.title : "Bài kiểm tra";
+  loadQuiz(list, title);
+}
+
+function loadQuiz(list, quizTitle = "Ôn tập"){
+  let idx = 0, score = 0;
+  function show(){
+    const q = list[idx];
+    let html = `<h2>${quizTitle}</h2>
+                <p style="font-size:1.1em; color:var(--accent); margin-bottom:10px;">Câu ${idx+1}/${list.length}</p>
+                <p class="question"><strong>${q.q}</strong></p>`;
+    q.options.forEach((opt,i)=>{
+      // Thêm hiển thị số thứ tự option
+      html += `<button class="mutebtn" style="display:block;width:100%;text-align:left;margin-bottom:6px"
+                onclick="answer(${i})">${i+1}. ${opt}</button>`;
+    });
+    html += `<div id="fb" style="margin-top:14px; min-height:30px;"></div>`;
+    mainCard.innerHTML = html;
+  }
+
+  window.answer = function(i){
+    // Vô hiệu hóa các nút sau khi trả lời
+    mainCard.querySelectorAll('.mutebtn').forEach(btn => btn.disabled = true);
+
+    const correct = (i === list[idx].answer);
+    document.getElementById("fb").innerHTML =
+      correct ? `<span style='color:green; font-weight:bold;'>✅ Chính xác!</span>`
+              : `<span style='color:red; font-weight:bold;'>❌ Sai. Đáp án đúng: ${list[idx].options[list[idx].answer]}</span>`;
+
+    // Đánh dấu đáp án đã chọn và đáp án đúng
+    const buttons = mainCard.querySelectorAll('.mutebtn');
+    buttons[i].style.backgroundColor = correct ? '#dcfce7' : '#fee2e2'; // Xanh lá/Đỏ cho đáp án đã chọn
+    if (!correct) {
+      buttons[list[idx].answer].style.backgroundColor = '#dcfce7'; // Đánh dấu đáp án đúng
+    }
+
+    if(correct) score++;
+    idx++;
+
+    // Tự động chuyển câu hoặc kết thúc
+    if(idx < list.length)
+      setTimeout(show, 1500); // Đợi 1.5s trước khi chuyển câu
+    else{
+      document.getElementById("fb").innerHTML +=
+        `<div style='margin-top:16px; padding:10px; border-top:1px dashed #ccc;'>
+          <strong style="font-size:1.2em;">🎉 Kết thúc bài ${quizTitle}: ${score}/${list.length}</strong>
+          <p>
+            <button class="btn" style="margin-top:10px;" onclick="navigateTo('quiz')">Làm bài khác</button>
+            <button class="mutebtn" style="margin-top:10px; margin-left:8px;" onclick="navigateTo('home')">Quay lại Trang chủ</button>
+          </p>
+        </div>`;
+      saveAttempt({user: currentUser(), quiz: quizTitle, score, total:list.length, date:Date.now()});
+    }
+  }
+
+  show();
+}
+
+function renderHistory(){
+  const arr = loadHistory();
+  let html = `
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>Lịch sử làm bài</h2>
+        <button class="mutebtn" onclick="navigateTo('home')">Quay lại Trang chủ</button>
+    </div>
+    <hr style="margin-top:0">
+  `;
+  if(!arr.length) html += "<p class='small'>Chưa có dữ liệu.</p>";
+  else{
+    html += "<table style='width:100%; border-collapse:collapse; margin-top:10px;'>";
+    html += "<tr><th style='border:1px solid #eee; padding:8px; text-align:left;'>Ngày</th><th style='border:1px solid #eee; padding:8px; text-align:left;'>Học sinh</th><th style='border:1px solid #eee; padding:8px; text-align:left;'>Bài kiểm tra</th><th style='border:1px solid #eee; padding:8px; text-align:left;'>Điểm</th></tr>";
+    arr.reverse().forEach(a=>{
+      html += `<tr>
+        <td style='border:1px solid #eee; padding:8px;'>${new Date(a.date).toLocaleString()}</td>
+        <td style='border:1px solid #eee; padding:8px;'>${a.user}</td>
+        <td style='border:1px solid #eee; padding:8px;'>${a.quiz || 'Toàn bộ'}</td>
+        <td style='border:1px solid #eee; padding:8px; font-weight:bold;'>${a.score}/${a.total}</td>
+      </tr>`;
+    });
+    html += "</table>";
+  }
+  mainCard.innerHTML = html;
+}
+
+// ---------------------- NAVIGATION ----------------------
+function navigateTo(page){
+  location.hash = page;
+  route();
+}
+function route(){
+  const h = location.hash.replace("#","") || "home";
+  if(h==="home") renderHome();
+  else if(h==="lessons") renderLessons();
+  else if(h==="quiz") renderQuiz();
+  else if(h==="history") renderHistory();
+  else renderHome();
+}
+
+updateUserPanel();
+window.onhashchange = route; 
+route();
+</script>
+
+</body>
+</html>
