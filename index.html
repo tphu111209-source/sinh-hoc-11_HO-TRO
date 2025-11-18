@@ -512,18 +512,47 @@ function renderHistory(){
 }
 
 // ---------------------- NAVIGATION ----------------------
+// ---------------------- NAVIGATION ----------------------
 function navigateTo(page){
-  location.hash = page;
-  route();
+    location.hash = page;
 }
-function route(){
-  const h = location.hash.replace("#","") || "home";
-  if(h==="home") renderHome();
-  else if(h==="lessons") renderLessons();
-  else if(h==="quiz") renderQuiz();
-  else if(h==="history") renderHistory();
-  else renderHome();
+
+function handleHashChange() {
+    const hash = location.hash.replace('#','');
+    switch(hash){
+        case 'lessons':
+            renderLessons();
+            break;
+        case 'quiz':
+            renderQuiz();
+            break;
+        case 'history':
+            renderHistory();
+            break;
+        case 'home':
+        case '':
+            renderHome();
+            break;
+        default:
+            // Nếu hash là ID bài học thì mở quiz bài đó
+            const lesson = LESSONS.find(l => l.id === hash);
+            if(lesson){
+                loadLessonQuiz(lesson.id);
+            } else {
+                renderHome(); // fallback
+            }
+    }
 }
+
+// Lắng nghe sự kiện hash change
+window.addEventListener('hashchange', handleHashChange);
+
+// Khi load trang lần đầu
+window.addEventListener('load', ()=>{
+    updateUserPanel();
+    handleHashChange();
+});
+
 
 updateUserPanel();
 window.onhashchange = route; 
@@ -533,4 +562,5 @@ route();
 </body>
 
 </html>
+
 
