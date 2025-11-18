@@ -1,8 +1,7 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TP304FXB04"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -86,8 +85,7 @@
     <a href="#lessons">Tóm tắt</a>
     <a href="#quiz">Ôn tập</a>
     <a href="#history">Lịch sử</a>
-    <a href="#login" id="nav-user">Đăng nhập</a> 
-  </nav>
+    </nav>
 </header>
 
 <main class="container">
@@ -95,20 +93,8 @@
     <section class="card" id="main-card"></section>
 
     <aside class="card">
-      <h3 id="welcome" style="margin-top:0">Bạn chưa đăng nhập</h3>
-
-      <div id="auth-controls">
-        <input id="username" placeholder="Tên học sinh">
-        <input id="password" placeholder="Mật khẩu" type="password">
-
-        <div style="display:flex; gap:8px; margin-top:8px">
-          <button class="btn" id="btn-login">Đăng nhập</button>
-          <button class="mutebtn" id="btn-register">Đăng ký</button>
-        </div>
-      </div>
-      
-      <button id="btn-logout" class="mutebtn" style="width:100%; margin-top:8px; display:none;">Đăng xuất</button>
-
+      <h3 style="margin-top:0">Thông báo</h3>
+      <p>Chào mừng bạn đến với hệ thống ôn tập trắc nghiệm Sinh học 11.</p>
       <hr style="margin:14px 0">
       <p class="small">Chọn mục ở bên trái để xem tóm tắt và làm bài.</p>
     </aside>
@@ -187,30 +173,59 @@ const LESSONS = [
   { id: "sh11_c1_intro", chapter: "CHƯƠNG I: TRAO ĐỔI CHẤT VÀ NĂNG LƯỢNG Ở THỰC VẬT", title: "Tổng quan", isChapter: true },
   {
     id:"sh11_c1_b1", chapter: "Chương I", title:"Bài 1: Hấp thụ & vận chuyển nước",
-    summary:`Rễ là cơ quan hấp thụ nước và ion khoáng chủ yếu. Nước vào **lông hút** bằng cơ chế **thẩm thấu**, do chênh lệch thế nước giữa đất và tế bào. Ion khoáng đi vào bằng **vận chuyển thụ động** (theo građien nồng độ/điện thế) hoặc **chủ động** (cần ATP). Nước di chuyển từ lông hút vào mạch gỗ rễ theo hai con đường chính: **gian bào** (qua thành tế bào) và **tế bào chất** (xuyên màng). Khi đến **nội bì**, nước buộc phải đi qua đai Caspari để vào mạch gỗ, giúp kiểm soát dòng nước và chất tan. Nước vận chuyển trong thân (dòng mạch gỗ) nhờ ba lực: 1) **Lực hút do thoát hơi nước** ở lá (quan trọng nhất, tạo áp suất âm); 2) **Lực liên kết – bám dính** của nước (giữ cột nước không đứt); 3) **Lực đẩy rễ** (do áp suất thẩm thấu). Thoát hơi nước đóng vai trò then chốt trong việc tạo dòng mạch gỗ và giúp điều hòa nhiệt độ cho cây. Quá trình vận chuyển chất hữu cơ (sản phẩm quang hợp) diễn ra trong **mạch rây** (dòng mạch rây) từ lá xuống các cơ quan dự trữ hoặc sinh trưởng.`
+    summary:`Rễ là cơ quan hấp thụ nước và ion khoáng chủ yếu.
+    Nước vào **lông hút** bằng cơ chế **thẩm thấu**, do chênh lệch thế nước giữa đất và tế bào.
+    Ion khoáng đi vào bằng **vận chuyển thụ động** (theo građien nồng độ/điện thế) hoặc **chủ động** (cần ATP).
+    Nước di chuyển từ lông hút vào mạch gỗ rễ theo hai con đường chính: **gian bào** (qua thành tế bào) và **tế bào chất** (xuyên màng).
+    Khi đến **nội bì**, nước buộc phải đi qua đai Caspari để vào mạch gỗ, giúp kiểm soát dòng nước và chất tan.
+    Nước vận chuyển trong thân (dòng mạch gỗ) nhờ ba lực: 1) **Lực hút do thoát hơi nước** ở lá (quan trọng nhất, tạo áp suất âm);
+    2) **Lực liên kết – bám dính** của nước (giữ cột nước không đứt);
+    3) **Lực đẩy rễ** (do áp suất thẩm thấu). Thoát hơi nước đóng vai trò then chốt trong việc tạo dòng mạch gỗ và giúp điều hòa nhiệt độ cho cây.
+    Quá trình vận chuyển chất hữu cơ (sản phẩm quang hợp) diễn ra trong **mạch rây** (dòng mạch rây) từ lá xuống các cơ quan dự trữ hoặc sinh trưởng.`
   },
   {
     id:"sh11_c1_b2", chapter: "Chương I", title:"Bài 2: Quang hợp",
-    summary:`Quang hợp là quá trình sử dụng năng lượng ánh sáng để tổng hợp chất hữu cơ (đường Glucose) từ CO₂ và H₂O, diễn ra chủ yếu ở **lục lạp** trong tế bào lá. Quá trình gồm hai pha:
-    * **Pha sáng** (tại màng tilacôit): Biến đổi năng lượng ánh sáng thành năng lượng hóa học, tạo ra **ATP**, **NADPH** và giải phóng **O₂** từ quá trình quang phân ly nước. Các sắc tố (Diệp lục a, b, Carôtenôit) hấp thụ ánh sáng.
-    * **Pha tối** (tại chất nền lục lạp): Sử dụng ATP và NADPH từ pha sáng để **cố định CO₂** tạo đường thông qua **chu trình Calvin** (C₃). Enzyme **Rubisco** là enzyme quan trọng nhất cố định CO₂.
-    Thực vật được phân loại thành C₃, C₄ và CAM. **C₄** và **CAM** có cơ chế cố định CO₂ sơ bộ (tạo axit 4-carbon) để thích nghi với môi trường khô nóng, giảm **hô hấp sáng** và tối ưu khả năng hấp thụ CO₂. Cường độ quang hợp bị chi phối bởi **ánh sáng** (cường độ, thành phần), **CO₂**, **nước**, **nhiệt độ** và hàm lượng **diệp lục**. Quang hợp cung cấp O₂ và chất hữu cơ cho sự sống, quyết định năng suất nông nghiệp.`
+    summary:`Quang hợp là quá trình sử dụng năng lượng ánh sáng để tổng hợp chất hữu cơ (đường Glucose) từ CO₂ và H₂O, diễn ra chủ yếu ở **lục lạp** trong tế bào lá.
+    Quá trình gồm hai pha:
+    * **Pha sáng** (tại màng tilacôit): Biến đổi năng lượng ánh sáng thành năng lượng hóa học, tạo ra **ATP**, **NADPH** và giải phóng **O₂** từ quá trình quang phân ly nước.
+    Các sắc tố (Diệp lục a, b, Carôtenôit) hấp thụ ánh sáng.
+    * **Pha tối** (tại chất nền lục lạp): Sử dụng ATP và NADPH từ pha sáng để **cố định CO₂** tạo đường thông qua **chu trình Calvin** (C₃).
+    Enzyme **Rubisco** là enzyme quan trọng nhất cố định CO₂.
+    Thực vật được phân loại thành C₃, C₄ và CAM.
+    **C₄** và **CAM** có cơ chế cố định CO₂ sơ bộ (tạo axit 4-carbon) để thích nghi với môi trường khô nóng, giảm **hô hấp sáng** và tối ưu khả năng hấp thụ CO₂.
+    Cường độ quang hợp bị chi phối bởi **ánh sáng** (cường độ, thành phần), **CO₂**, **nước**, **nhiệt độ** và hàm lượng **diệp lục**.
+    Quang hợp cung cấp O₂ và chất hữu cơ cho sự sống, quyết định năng suất nông nghiệp.`
   },
   {
     id:"sh11_c1_b3", chapter: "Chương I", title:"Bài 3: Hô hấp ở thực vật",
-    summary:`Hô hấp là quá trình **oxy hóa** các chất hữu cơ (như Glucose) thành CO₂ và H₂O, giải phóng năng lượng (chủ yếu là **ATP**) để cung cấp cho mọi hoạt động sống của cây. Hô hấp gồm ba giai đoạn chính: 1) **Đường phân** (tế bào chất, tạo 2 ATP và 2 Pyruvate); 2) **Chu trình Crebs** (ti thể, tạo ra CO₂ và H⁺); 3) **Chuỗi chuyền electron** (màng trong ti thể, tạo ra phần lớn ATP nhờ O₂ là chất nhận electron cuối cùng). **Hô hấp hiếu khí** (có O₂) tạo ra khoảng 30-32 ATP. **Hô hấp kị khí** (không O₂) xảy ra trong điều kiện thiếu oxy, tạo ra rượu etylic hoặc axit lactic và chỉ 2 ATP, gây độc cho cây. Năng lượng hô hấp được dùng cho: sinh trưởng, hấp thụ ion khoáng chủ động, tổng hợp các chất mới (protein, lipid, axit nucleic) và duy trì sức trương. Cường độ hô hấp bị ảnh hưởng mạnh bởi **nhiệt độ** (tăng theo nhiệt độ đến giới hạn tối ưu), **nước**, **oxy** và trạng thái sinh lý của cây.`
+    summary:`Hô hấp là quá trình **oxy hóa** các chất hữu cơ (như Glucose) thành CO₂ và H₂O, giải phóng năng lượng (chủ yếu là **ATP**) để cung cấp cho mọi hoạt động sống của cây.
+    Hô hấp gồm ba giai đoạn chính: 1) **Đường phân** (tế bào chất, tạo 2 ATP và 2 Pyruvate);
+    2) **Chu trình Crebs** (ti thể, tạo ra CO₂ và H⁺);
+    3) **Chuỗi chuyền electron** (màng trong ti thể, tạo ra phần lớn ATP nhờ O₂ là chất nhận electron cuối cùng).
+    **Hô hấp hiếu khí** (có O₂) tạo ra khoảng 30-32 ATP.
+    **Hô hấp kị khí** (không O₂) xảy ra trong điều kiện thiếu oxy, tạo ra rượu etylic hoặc axit lactic và chỉ 2 ATP, gây độc cho cây.
+    Năng lượng hô hấp được dùng cho: sinh trưởng, hấp thụ ion khoáng chủ động, tổng hợp các chất mới (protein, lipid, axit nucleic) và duy trì sức trương.
+    Cường độ hô hấp bị ảnh hưởng mạnh bởi **nhiệt độ** (tăng theo nhiệt độ đến giới hạn tối ưu), **nước**, **oxy** và trạng thái sinh lý của cây.`
   },
 
   { id: "sh11_c2_intro", chapter: "CHƯƠNG II: CẢM ỨNG Ở THỰC VẬT", title: "Tổng quan", isChapter: true },
   {
     id:"sh11_c2_b1", chapter: "Chương II", title:"Bài 4: Hướng động",
-    summary:`**Hướng động** (Tropism) là hình thức cảm ứng của thực vật bằng cách sinh trưởng theo hướng của kích thích từ môi trường. Phản ứng này là **sinh trưởng có hướng**. Các dạng chính gồm: **hướng sáng** (thân dương, rễ âm), **hướng trọng lực** (rễ dương, thân âm), **hướng nước** (rễ dương), **hướng hóa** (rễ về phía chất dinh dưỡng), và **hướng tiếp xúc** (thân leo quấn vào giá thể). Cơ chế chung là sự phân bố **không đều của Auxin**: Auxin phân bố nhiều hơn ở phía không bị kích thích (hoặc bị kích thích yếu hơn) làm phía đó sinh trưởng nhanh hơn, gây ra sự uốn cong. Ví dụ, trong hướng sáng, auxin dồn về phía tối, kích thích kéo dài tế bào phía tối nhanh hơn phía sáng, làm ngọn cây cong về phía sáng. Hướng động là cơ chế quan trọng giúp cây cố định và thích nghi, tối ưu hóa việc hấp thụ ánh sáng và chất dinh dưỡng.`
+    summary:`**Hướng động** (Tropism) là hình thức cảm ứng của thực vật bằng cách sinh trưởng theo hướng của kích thích từ môi trường.
+    Phản ứng này là **sinh trưởng có hướng**. Các dạng chính gồm: **hướng sáng** (thân dương, rễ âm), **hướng trọng lực** (rễ dương, thân âm), **hướng nước** (rễ dương), **hướng hóa** (rễ về phía chất dinh dưỡng), và **hướng tiếp xúc** (thân leo quấn vào giá thể).
+    Cơ chế chung là sự phân bố **không đều của Auxin**: Auxin phân bố nhiều hơn ở phía không bị kích thích (hoặc bị kích thích yếu hơn) làm phía đó sinh trưởng nhanh hơn, gây ra sự uốn cong.
+    Ví dụ, trong hướng sáng, auxin dồn về phía tối, kích thích kéo dài tế bào phía tối nhanh hơn phía sáng, làm ngọn cây cong về phía sáng.
+    Hướng động là cơ chế quan trọng giúp cây cố định và thích nghi, tối ưu hóa việc hấp thụ ánh sáng và chất dinh dưỡng.`
   },
   {
     id:"sh11_c2_b2", chapter: "Chương II", title:"Bài 5: Ứng động",
-    summary:`**Ứng động** (Nastic movement) là phản ứng của thực vật đáp lại kích thích nhưng **không phụ thuộc vào hướng** của kích thích. Ứng động thường là phản ứng nhanh hơn hướng động. Có hai loại chính:
-    * **Ứng động sinh trưởng**: Liên quan đến tốc độ sinh trưởng không đều của các phần cơ quan (ví dụ: cánh hoa mở ra/khép lại, nở của hoa mười giờ theo ánh sáng). Cơ chế chủ yếu do sự thay đổi nồng độ Auxin, Gibberellin hoặc do **Quang chu kì** (Phytochrom) chi phối sự sinh trưởng của các mặt cánh hoa.
-    * **Ứng động không sinh trưởng**: Do sự thay đổi đột ngột về **sức trương nước** của các nhóm tế bào (ví dụ: lá trinh nữ cụp lại khi chạm vào – ứng động tiếp xúc, hoặc sự bắt mồi của cây nắp ấm). Khi kích thích xảy ra, sự di chuyển ion và nước nhanh chóng làm thay đổi sức trương ở các tế bào đệm (pulvinus), gây ra sự vận động.
+    summary:`**Ứng động** (Nastic movement) là phản ứng của thực vật đáp lại kích thích nhưng **không phụ thuộc vào hướng** của kích thích.
+    Ứng động thường là phản ứng nhanh hơn hướng động.
+    Có hai loại chính:
+    * **Ứng động sinh trưởng**: Liên quan đến tốc độ sinh trưởng không đều của các phần cơ quan (ví dụ: cánh hoa mở ra/khép lại, nở của hoa mười giờ theo ánh sáng).
+    Cơ chế chủ yếu do sự thay đổi nồng độ Auxin, Gibberellin hoặc do **Quang chu kì** (Phytochrom) chi phối sự sinh trưởng của các mặt cánh hoa.
+    * **Ứng động không sinh trưởng**: Do sự thay đổi đột ngột về **sức trương nước** của các nhóm tế bào (ví dụ: lá trinh nữ cụp lại khi chạm vào – ứng động tiếp xúc, hoặc sự bắt mồi của cây nắp ấm).
+    Khi kích thích xảy ra, sự di chuyển ion và nước nhanh chóng làm thay đổi sức trương ở các tế bào đệm (pulvinus), gây ra sự vận động.
     Ứng động giúp cây phản ứng linh hoạt, thích nghi với sự thay đổi của môi trường (ánh sáng, nhiệt độ) và thực hiện chức năng tự bảo vệ.`
   },
 
@@ -220,7 +235,12 @@ const LESSONS = [
     summary:`**Sinh trưởng** là sự tăng không thể đảo ngược về kích thước và khối lượng của thực vật do tăng số lượng và kích thước tế bào.
     * **Sinh trưởng sơ cấp** (tăng chiều dài) diễn ra ở đỉnh rễ, đỉnh thân do mô phân sinh đỉnh.
     * **Sinh trưởng thứ cấp** (tăng chiều ngang) diễn ra ở thân, rễ cây thân gỗ do mô phân sinh bên (tầng sinh mạch).
-    Các **hoocmôn thực vật** (Phytohormone) điều hòa quá trình này: **Auxin** (kích thích kéo dài tế bào, hình thành rễ, gây hướng động); **Gibberellin** (kích thích kéo dài thân, nảy mầm, ra hoa sớm); **Xitokinin** (kích thích phân chia tế bào, làm chậm lão hóa); **Axit Abxixic (ABA)** (gây trạng thái ngủ, đóng khí khổng, ức chế nảy mầm); **Ethylen** (kích thích quả chín, rụng lá). Sự cân bằng giữa các hormone kích thích và ức chế quyết định tốc độ và hình thái sinh trưởng của cây. Sinh trưởng bị chi phối bởi các yếu tố ngoài như di truyền, ánh sáng, nước, nhiệt độ và dinh dưỡng khoáng.`
+    Các **hoocmôn thực vật** (Phytohormone) điều hòa quá trình này: **Auxin** (kích thích kéo dài tế bào, hình thành rễ, gây hướng động);
+    **Gibberellin** (kích thích kéo dài thân, nảy mầm, ra hoa sớm);
+    **Xitokinin** (kích thích phân chia tế bào, làm chậm lão hóa);
+    **Axit Abxixic (ABA)** (gây trạng thái ngủ, đóng khí khổng, ức chế nảy mầm);
+    **Ethylen** (kích thích quả chín, rụng lá). Sự cân bằng giữa các hormone kích thích và ức chế quyết định tốc độ và hình thái sinh trưởng của cây.
+    Sinh trưởng bị chi phối bởi các yếu tố ngoài như di truyền, ánh sáng, nước, nhiệt độ và dinh dưỡng khoáng.`
   },
   {
     id:"sh11_c3_b2", chapter: "Chương III", title:"Bài 7: Phát triển ở thực vật",
@@ -264,72 +284,11 @@ document.getElementById("modal-overlay").addEventListener('click', function(even
 // -------------------------------------------------------------------
 
 
-// ---------------------- AUTH LOGIC ----------------------
-function currentUser(){ return localStorage.getItem("edu_user"); }
-
-// Cập nhật giao diện bên lề (Side Panel)
-function updateUserPanel(){
-  const u = currentUser();
-  const welcome = document.getElementById("welcome");
-  const controls = document.getElementById("auth-controls");
-  const logout = document.getElementById("btn-logout");
-
-  if(u){
-    welcome.textContent = "Xin chào, " + u;
-    controls.style.display = "none";
-    logout.style.display = "block"; // Hiển thị nút Đăng xuất
-    document.getElementById("nav-user").textContent = u;
-  } else {
-    welcome.textContent = "Bạn chưa đăng nhập";
-    controls.style.display = "flex"; // Hiển thị khối Đăng nhập/Đăng ký
-    logout.style.display = "none";
-    document.getElementById("nav-user").textContent = "Đăng nhập";
-  }
-}
-
-// Xử lý Đăng ký (Đã thay thế alert() bằng showModal())
-document.getElementById("btn-register").onclick = ()=>{
-  const username = document.getElementById("username");
-  const password = document.getElementById("password");
-  const user = username.value.trim();
-  const pass = password.value.trim();
-  if(!user || !pass) return showModal("Lỗi", "Vui lòng nhập đủ Tên và Mật khẩu!");
-
-  let accounts = JSON.parse(localStorage.getItem("edu_accounts") || "{}");
-  if(accounts[user]) return showModal("Lỗi", "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác!");
-
-  accounts[user] = pass;
-  localStorage.setItem("edu_accounts", JSON.stringify(accounts));
-  showModal("Thành công", "Đăng ký thành công! Giờ bạn có thể đăng nhập.");
-  username.value = ""; // Xóa dữ liệu cũ
-  password.value = "";
-};
-
-// Xử lý Đăng nhập (Đã thay thế alert() bằng showModal())
-document.getElementById("btn-login").onclick = ()=>{
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
-
-  let acc = JSON.parse(localStorage.getItem("edu_accounts") || "{}");
-  if(!acc[user] || acc[user] !== pass) return showModal("Lỗi", "Sai tên đăng nhập hoặc mật khẩu. Hoặc bạn chưa đăng ký!");
-
-  localStorage.setItem("edu_user", user);
-  updateUserPanel();
-  showModal("Đăng nhập thành công", "Chào mừng bạn trở lại! Hãy bắt đầu ôn tập.");
-  navigateTo("home"); 
-};
-
-// Xử lý Đăng xuất
-document.getElementById("btn-logout").onclick = ()=>{
-  localStorage.removeItem("edu_user");
-  updateUserPanel();
-  showModal("Thông báo", "Bạn đã đăng xuất thành công.");
-  navigateTo("home"); 
-};
-
 // ---------------------- HISTORY ----------------------
 function saveAttempt(at){
   let arr = JSON.parse(localStorage.getItem("quiz_history") || "[]");
+  // Đã sửa lỗi: currentUser() không tồn tại, thay bằng giá trị mặc định "Học sinh"
+  at.user = "Học sinh"; 
   arr.push(at);
   localStorage.setItem("quiz_history", JSON.stringify(arr));
 }
@@ -478,7 +437,7 @@ function loadQuiz(list, quizTitle = "Ôn tập"){
             <button class="mutebtn" style="margin-top:10px; margin-left:8px;" onclick="navigateTo('home')">Quay lại Trang chủ</button>
           </p>
         </div>`;
-      saveAttempt({user: currentUser(), quiz: quizTitle, score, total:list.length, date:Date.now()});
+      saveAttempt({quiz: quizTitle, score, total:list.length, date:Date.now()});
     }
   }
 
@@ -512,49 +471,28 @@ function renderHistory(){
 }
 
 // ---------------------- NAVIGATION ----------------------
-// ---------------------- NAVIGATION ----------------------
 function navigateTo(page){
-    location.hash = page;
+  location.hash = page;
+  // Bỏ route() vì nó đã được gọi bởi window.onhashchange
 }
 
-function handleHashChange() {
-    const hash = location.hash.replace('#','');
-    switch(hash){
-        case 'lessons':
-            renderLessons();
-            break;
-        case 'quiz':
-            renderQuiz();
-            break;
-        case 'history':
-            renderHistory();
-            break;
-        case 'home':
-        case '':
-            renderHome();
-            break;
-        default:
-            // Nếu hash là ID bài học thì mở quiz bài đó
-            const lesson = LESSONS.find(l => l.id === hash);
-            if(lesson){
-                loadLessonQuiz(lesson.id);
-            } else {
-                renderHome(); // fallback
-            }
+function route(){
+  const h = location.hash.replace("#","") || "home";
+  if(h==="home") renderHome();
+  else if(h==="lessons") renderLessons();
+  else if(h==="quiz") renderQuiz();
+  else if(h==="history") renderHistory();
+  else {
+    // Thêm logic xử lý hash là ID bài học
+    const lesson = LESSONS.find(l => l.id === h);
+    if(lesson){
+        loadLessonQuiz(lesson.id);
+    } else {
+        renderHome();
     }
+  }
 }
 
-// Lắng nghe sự kiện hash change
-window.addEventListener('hashchange', handleHashChange);
-
-// Khi load trang lần đầu
-window.addEventListener('load', ()=>{
-    updateUserPanel();
-    handleHashChange();
-});
-
-
-updateUserPanel();
 window.onhashchange = route; 
 route();
 </script>
@@ -562,5 +500,3 @@ route();
 </body>
 
 </html>
-
-
